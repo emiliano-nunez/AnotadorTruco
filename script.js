@@ -42,21 +42,59 @@
     </g>`;
   }
 
+  function cuadro(c, puntos, anterior) {
+    const enCuadro = Math.max(0, Math.min(5, puntos - c * 5));
+    let lineas = '<rect class="guia" x="10" y="10" width="44" height="44" rx="2"/>';
+    for (let i = 0; i < enCuadro; i++) lineas += palito(LADOS[i], c * 5 + i + 1 > anterior);
+    return `<svg class="cuadro" viewBox="0 0 64 64" aria-hidden="true">${lineas}</svg>`;
+  }
+
   function dibujarFosforos(contenedor, puntos, anterior) {
     const cuadros = estado.limite / 5;
-    contenedor.style.setProperty('--n', cuadros);
-    let html = '';
-    for (let c = 0; c < cuadros; c++) {
-      if (tieneBuenas() && c > 0 && c * 5 === mitad()) html += '<div class="separador"></div>';
-      const enCuadro = Math.max(0, Math.min(5, puntos - c * 5));
-      let lineas = '<rect class="guia" x="10" y="10" width="44" height="44" rx="2"/>';
-      for (let i = 0; i < enCuadro; i++) {
-        lineas += palito(LADOS[i], c * 5 + i + 1 > anterior);
-      }
-      html += `<svg class="cuadro" viewBox="0 0 64 64" aria-hidden="true">${lineas}</svg>`;
-    }
-    contenedor.innerHTML = html;
+    const grupos = tieneBuenas() ? [[0, cuadros / 2], [cuadros / 2, cuadros]] : [[0, cuadros]];
+    contenedor.innerHTML = grupos.map(([desde, hasta]) => {
+      let html = '';
+      for (let c = desde; c < hasta; c++) html += cuadro(c, puntos, anterior);
+      return `<div class="grupo">${html}</div>`;
+    }).join('<div class="separador"></div>');
+    ajustar(contenedor);
   }
+
+  // Calcula el tamaño de los cuadraditos para que entren sin scroll.
+  // Si en una sola columna quedan chicos, pone malas y buenas lado a lado.
+  const GAP = 6, MAX = 64;
+  function ajustar(el) {
+    const n = estado.limite / 5;
+    const H = el.clientHeight, W = el.clientWidth;
+    if (!H || !W) return;
+    let lado, dos = false;
+    if (!tieneBuenas()) {
+      lado = Math.min(MAX, (H - (n - 1) * GAP) / n, W * 0.8);
+    } else {
+      const una = Math.min(MAX, (H - 6 - n * GAP) / n, W * 0.8);
+      const filas = n / 2;
+      const dosCol = Math.min(MAX, (H - (filas - 1) * GAP) / filas, (W - 2 * GAP - 6) / 2);
+      lado = una;
+      if (una < 44 && dosCol > una + 2) { lado = dosCol; dos = true; }
+    }
+    el.classList.toggle('dos', dos);
+    el.style.setProperty('--filas', n / 2);
+    el.style.setProperty('--lado', Math.max(8, Math.floor(lado)) + 'px');
+  }
+
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(entradas => entradas.forEach(e => ajustar(e.target)));
+    document.querySelectorAll('.fosforos').forEach(f => ro.observe(f));
+  }
+
+  // Alto real visible (descuenta las barras del navegador del celular)
+  function fijarAlto() {
+    document.documentElement.style.setProperty('--alto', window.innerHeight + 'px');
+    document.querySelectorAll('.fosforos').forEach(ajustar);
+  }
+  window.addEventListener('resize', fijarAlto);
+  window.addEventListener('orientationchange', () => setTimeout(fijarAlto, 300));
+  fijarAlto();
 
   function render(anteriores = estado.puntos) {
     radios.forEach(r => { r.checked = Number(r.value) === estado.limite; });
