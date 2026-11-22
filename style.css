@@ -51,6 +51,15 @@ h1 {
   white-space: nowrap;
 }
 
+.version {
+  font-family: system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: normal;
+  letter-spacing: 0;
+  opacity: 0.45;
+  vertical-align: middle;
+}
+
 .btn-reiniciar {
   background: rgba(255, 255, 255, 0.12);
   color: var(--madera);
