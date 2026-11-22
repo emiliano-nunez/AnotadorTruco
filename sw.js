@@ -1,10 +1,10 @@
 // Red primero (siempre la última versión), caché si no hay conexión.
-const CACHE = 'truco-v7';
+const CACHE = 'truco-v8';
 const ARCHIVOS = [
   './',
   'index.html',
-  'style.css?v=7',
-  'script.js?v=7',
+  'style.css?v=8',
+  'script.js?v=8',
   'manifest.webmanifest',
   'icons/icon-192.png',
   'icons/icon-512.png',

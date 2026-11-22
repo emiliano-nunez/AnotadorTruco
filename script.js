@@ -87,14 +87,10 @@
     document.querySelectorAll('.fosforos').forEach(f => ro.observe(f));
   }
 
-  // Alto real visible (descuenta las barras del navegador del celular)
-  function fijarAlto() {
-    document.documentElement.style.setProperty('--alto', window.innerHeight + 'px');
-    document.querySelectorAll('.fosforos').forEach(ajustar);
-  }
-  window.addEventListener('resize', fijarAlto);
-  window.addEventListener('orientationchange', () => setTimeout(fijarAlto, 300));
-  fijarAlto();
+  // Recalcular al rotar o cambiar el tamaño de la ventana
+  const reajustar = () => document.querySelectorAll('.fosforos').forEach(ajustar);
+  window.addEventListener('resize', reajustar);
+  window.addEventListener('orientationchange', () => setTimeout(reajustar, 300));
 
   function render(anteriores = estado.puntos) {
     radios.forEach(r => { r.checked = Number(r.value) === estado.limite; });
