@@ -260,8 +260,12 @@ button:active { transform: scale(0.95); }
   align-items: center;
   justify-content: center;
   padding: 16px;
+  animation: fundido 0.2s ease-out;
 }
 .modal[hidden] { display: none; }
+.modal-contenido { animation: entrar 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+@keyframes fundido { from { opacity: 0; } }
+@keyframes entrar { from { opacity: 0; transform: scale(0.85) translateY(12px); } }
 
 .modal-contenido {
   background: var(--madera);
@@ -275,9 +279,12 @@ button:active { transform: scale(0.95); }
   flex-direction: column;
   gap: 12px;
 }
-.trofeo { font-size: 3rem; }
+.icono-modal { width: 56px; height: 56px; margin: 0 auto; }
 .modal-contenido h2 { font-family: Georgia, serif; }
-#revancha { background: var(--paño); color: var(--madera); }
+.texto-modal { opacity: 0.75; margin-bottom: 4px; }
+#confirmar-si { background: var(--paño); color: var(--madera); }
+
+.equipo.ganador { border-color: var(--acento); box-shadow: 0 0 18px rgba(224, 177, 58, 0.35); }
 .secundario { background: transparent; color: var(--tinta); text-decoration: underline; }
 
 /* ---------- Pantallas chicas ---------- */

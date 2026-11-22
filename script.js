@@ -3,7 +3,9 @@
   const LIMITES = [15, 20, 30, 40];
   const equipos = [...document.querySelectorAll('.equipo')];
   const radios = [...document.querySelectorAll('input[name="limite"]')];
-  const modal = document.getElementById('ganador');
+  const modal = document.getElementById('confirmar');
+  const btnSi = document.getElementById('confirmar-si');
+  const btnNo = document.getElementById('confirmar-no');
 
   let estado = cargar();
   let partidaTerminada = false;
@@ -63,10 +65,13 @@
       el.querySelector('.nombre').value = estado.nombres[i];
       el.querySelector('.puntos').textContent = p;
       const est = el.querySelector('.estado');
-      const buenas = tieneBuenas() && p >= mitad();
-      if (!tieneBuenas()) est.textContent = `Faltan ${estado.limite - p}`;
+      const gano = p === estado.limite;
+      const buenas = gano || (tieneBuenas() && p >= mitad());
+      if (gano) est.textContent = '¡Ganó!';
+      else if (!tieneBuenas()) est.textContent = `Faltan ${estado.limite - p}`;
       else est.textContent = buenas ? `Buenas (${p - mitad()})` : `Malas (${p})`;
       est.classList.toggle('buenas', buenas);
+      el.classList.toggle('ganador', gano);
       dibujarFosforos(el.querySelector('.fosforos'), p, anteriores[i]);
     });
   }
@@ -80,23 +85,35 @@
     guardar();
     render(anteriores);
     if (navigator.vibrate) navigator.vibrate(20);
-    if (nuevo === estado.limite) ganar(i);
-    else partidaTerminada = estado.puntos.includes(estado.limite);
-  }
-
-  function ganar(i) {
-    partidaTerminada = true;
-    document.getElementById('texto-ganador').textContent = `¡Ganó ${estado.nombres[i]}!`;
-    modal.hidden = false;
+    partidaTerminada = estado.puntos.includes(estado.limite);
   }
 
   function nuevaPartida() {
     estado.puntos = [0, 0];
     partidaTerminada = false;
-    modal.hidden = true;
     guardar();
     render();
   }
+
+  // Pop-up de confirmación; devuelve una promesa con true/false
+  let responder = null;
+  function confirmar(titulo, texto, textoSi) {
+    document.getElementById('confirmar-titulo').textContent = titulo;
+    document.getElementById('confirmar-texto').textContent = texto;
+    btnSi.textContent = textoSi;
+    modal.hidden = false;
+    btnSi.focus();
+    return new Promise(res => { responder = res; });
+  }
+  function cerrarModal(respuesta) {
+    modal.hidden = true;
+    if (responder) responder(respuesta);
+    responder = null;
+  }
+  btnSi.addEventListener('click', () => cerrarModal(true));
+  btnNo.addEventListener('click', () => cerrarModal(false));
+  modal.addEventListener('click', e => { if (e.target === modal) cerrarModal(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) cerrarModal(false); });
 
   const hayPuntos = () => estado.puntos.some(p => p > 0);
 
@@ -112,23 +129,20 @@
     input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
   });
 
-  document.getElementById('reiniciar').addEventListener('click', () => {
-    if (hayPuntos() && !confirm('¿Empezar una nueva partida?')) return;
+  document.getElementById('reiniciar').addEventListener('click', async () => {
+    if (hayPuntos() && !(await confirmar('¿Nueva partida?', 'Se borran los puntos de los dos equipos.', 'Sí, empezar de nuevo'))) return;
     nuevaPartida();
   });
 
-  radios.forEach(r => r.addEventListener('change', () => {
+  radios.forEach(r => r.addEventListener('change', async () => {
     const limite = Number(r.value);
-    if (hayPuntos() && !confirm('Cambiar los puntos de la partida la reinicia. ¿Continuar?')) {
+    if (hayPuntos() && !(await confirmar(`¿Partida a ${limite}?`, 'Cambiar los puntos reinicia la partida actual.', `Sí, jugar a ${limite}`))) {
       render();
       return;
     }
     estado.limite = limite;
     nuevaPartida();
   }));
-
-  document.getElementById('revancha').addEventListener('click', nuevaPartida);
-  document.getElementById('cerrar-modal').addEventListener('click', () => { modal.hidden = true; });
 
   render();
   partidaTerminada = estado.puntos.includes(estado.limite);

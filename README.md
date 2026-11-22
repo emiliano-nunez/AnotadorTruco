@@ -11,7 +11,8 @@ Anotador de puntos para el truco argentino, hecho con HTML, CSS y JavaScript pur
 - Partida a 15 (solo malas), 20, 30 o 40 (malas y buenas).
 - Botones + y −; también se puede tocar la zona de fósforos para sumar.
 - Ocupa toda la pantalla sin scroll: los fósforos se achican según el espacio.
-- Aviso de ganador al llegar al límite.
+- El equipo que llega al límite queda resaltado como ganador.
+- Pop-up propio para confirmar una nueva partida o un cambio de puntos.
 - Guarda la partida en el navegador (no se pierde si recargás la página).
 - Instalable como app (PWA) y funciona sin conexión.
 

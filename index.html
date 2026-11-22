@@ -56,12 +56,21 @@
     </section>
   </main>
 
-  <div id="ganador" class="modal" hidden>
+  <div id="confirmar" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="confirmar-titulo">
     <div class="modal-contenido">
-      <p class="trofeo">🏆</p>
-      <h2 id="texto-ganador"></h2>
-      <button id="revancha">Revancha</button>
-      <button id="cerrar-modal" class="secundario">Volver</button>
+      <svg class="icono-modal" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="16" fill="#1f4d2b"/>
+        <g stroke="#e9d3a0" stroke-width="5" stroke-linecap="round">
+          <line x1="18" y1="18" x2="18" y2="46"/><line x1="18" y1="18" x2="46" y2="18"/>
+          <line x1="46" y1="18" x2="46" y2="46"/><line x1="18" y1="46" x2="46" y2="46"/>
+          <line x1="18" y1="46" x2="46" y2="18"/>
+        </g>
+        <g fill="#c0392b"><circle cx="18" cy="46" r="4"/><circle cx="46" cy="18" r="4"/><circle cx="46" cy="46" r="4"/></g>
+      </svg>
+      <h2 id="confirmar-titulo">¿Nueva partida?</h2>
+      <p id="confirmar-texto" class="texto-modal">Se borran los puntos de los dos equipos.</p>
+      <button id="confirmar-si">Sí, empezar de nuevo</button>
+      <button id="confirmar-no" class="secundario">Cancelar</button>
     </div>
   </div>
 
