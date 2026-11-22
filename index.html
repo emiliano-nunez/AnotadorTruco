@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1f4d2b">
+  <title>Anotador de Truco</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Anotador de Truco</h1>
+    <div class="opciones">
+      <label for="limite">Partida a</label>
+      <select id="limite">
+        <option value="15">15</option>
+        <option value="30" selected>30</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="tablero">
+    <section class="equipo" data-equipo="0">
+      <input class="nombre" type="text" value="Nosotros" maxlength="16" aria-label="Nombre del equipo 1">
+      <div class="puntos" aria-live="polite">0</div>
+      <div class="estado">Malas</div>
+      <div class="fosforos"></div>
+      <div class="botones">
+        <button class="menos" aria-label="Restar un punto">−1</button>
+        <button class="mas" aria-label="Sumar un punto">+1</button>
+      </div>
+    </section>
+
+    <section class="equipo" data-equipo="1">
+      <input class="nombre" type="text" value="Ellos" maxlength="16" aria-label="Nombre del equipo 2">
+      <div class="puntos" aria-live="polite">0</div>
+      <div class="estado">Malas</div>
+      <div class="fosforos"></div>
+      <div class="botones">
+        <button class="menos" aria-label="Restar un punto">−1</button>
+        <button class="mas" aria-label="Sumar un punto">+1</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="deshacer" disabled>↶ Deshacer</button>
+    <button id="reiniciar">Nueva partida</button>
+  </footer>
+
+  <div id="ganador" class="modal" hidden>
+    <div class="modal-contenido">
+      <p class="trofeo">🏆</p>
+      <h2 id="texto-ganador"></h2>
+      <button id="revancha">Revancha</button>
+      <button id="cerrar-modal" class="secundario">Volver</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

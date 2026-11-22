@@ -1,0 +1,209 @@
+:root {
+  --paño: #1f4d2b;
+  --paño-oscuro: #163a20;
+  --madera: #f4ead5;
+  --tinta: #2b1d0e;
+  --fosforo: #e9d3a0;
+  --cabeza: #c0392b;
+  --acento: #e0b13a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(circle at 50% 30%, var(--paño), var(--paño-oscuro));
+  color: var(--madera);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+header {
+  text-align: center;
+  padding: 16px 16px 8px;
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+.opciones {
+  margin-top: 6px;
+  font-size: 0.95rem;
+}
+
+select {
+  font-size: 1rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: none;
+  background: var(--madera);
+  color: var(--tinta);
+}
+
+.tablero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.equipo {
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipo + .equipo { border-left-style: dashed; }
+
+.nombre {
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  color: var(--madera);
+  padding: 4px;
+}
+.nombre:focus { outline: none; border-bottom-color: var(--acento); }
+
+.puntos {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.estado {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.8;
+}
+.estado.buenas { color: var(--acento); opacity: 1; }
+
+.fosforos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 200px;
+  width: 100%;
+}
+
+.separador {
+  width: 80%;
+  border-top: 2px solid var(--acento);
+  margin: 4px 0;
+}
+
+.cuadro { width: 64px; height: 64px; overflow: visible; }
+
+.palito line {
+  stroke: var(--fosforo);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.palito circle { fill: var(--cabeza); }
+
+.palito.nuevo { animation: aparecer 0.25s ease-out; }
+@keyframes aparecer {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.botones {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: bold;
+  transition: transform 0.08s, filter 0.15s;
+}
+button:active { transform: scale(0.95); }
+button:disabled { opacity: 0.4; cursor: default; }
+
+.mas {
+  flex: 2;
+  font-size: 1.5rem;
+  background: var(--acento);
+  color: var(--tinta);
+}
+.menos {
+  flex: 1;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--madera);
+}
+
+footer {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 12px 16px 20px;
+}
+footer button {
+  background: var(--madera);
+  color: var(--tinta);
+  min-width: 140px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal[hidden] { display: none; }
+
+.modal-contenido {
+  background: var(--madera);
+  color: var(--tinta);
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.trofeo { font-size: 3rem; }
+.modal-contenido h2 { font-family: Georgia, serif; }
+#revancha { background: var(--paño); color: var(--madera); }
+.secundario { background: transparent; color: var(--tinta); text-decoration: underline; }
+
+@media (max-width: 400px) {
+  h1 { font-size: 1.4rem; }
+  .tablero { gap: 8px; padding: 8px; }
+  .equipo { padding: 8px; }
+  .puntos { font-size: 2.4rem; }
+  .cuadro { width: 52px; height: 52px; }
+  footer button { min-width: 0; flex: 1; }
+}
