@@ -10,110 +10,198 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: radial-gradient(circle at 50% 30%, var(--paño), var(--paño-oscuro));
+  background-color: var(--paño-oscuro);
   color: var(--madera);
-  min-height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   user-select: none;
+  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ---------- Encabezado ---------- */
 header {
-  text-align: center;
-  padding: 16px 16px 8px;
+  padding: 12px 16px 4px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fila-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 h1 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.8rem;
-  letter-spacing: 1px;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
-.opciones {
-  margin-top: 6px;
-  font-size: 0.95rem;
+.btn-reiniciar {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--madera);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
-select {
-  font-size: 1rem;
-  padding: 2px 6px;
-  border-radius: 6px;
+.limite {
   border: none;
-  background: var(--madera);
-  color: var(--tinta);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.limite legend {
+  float: left;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.75;
+  white-space: nowrap;
 }
 
+.segmentos {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+.segmentos label { position: relative; cursor: pointer; }
+.segmentos input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  pointer-events: none;
+}
+.segmentos span {
+  display: block;
+  text-align: center;
+  padding: 7px 0;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--madera);
+  opacity: 0.7;
+  transition: background 0.2s, color 0.2s, opacity 0.2s, box-shadow 0.2s;
+}
+.segmentos input:checked + span {
+  background: var(--acento);
+  color: var(--tinta);
+  opacity: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.segmentos input:focus-visible + span { outline: 2px solid var(--madera); outline-offset: 2px; }
+
+/* ---------- Tablero ---------- */
 .tablero {
   flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 8px 16px 16px;
   max-width: 720px;
   width: 100%;
   margin: 0 auto;
 }
 
 .equipo {
+  min-height: 0;
   background: rgba(0, 0, 0, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
-  padding: 12px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
-
-.equipo + .equipo { border-left-style: dashed; }
 
 .nombre {
   width: 100%;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
   background: transparent;
   border: none;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
   color: var(--madera);
   padding: 4px;
+  -webkit-user-select: text;
+  user-select: text;
 }
 .nombre:focus { outline: none; border-bottom-color: var(--acento); }
 
 .puntos {
-  font-size: 3rem;
+  font-size: 2.6rem;
   font-weight: bold;
   line-height: 1;
 }
 
 .estado {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   opacity: 0.8;
 }
 .estado.buenas { color: var(--acento); opacity: 1; }
 
+/* Los fósforos se achican para entrar siempre en el espacio disponible */
 .fosforos {
   flex: 1;
+  min-height: 0;
+  width: 100%;
+  container-type: size;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  min-height: 200px;
-  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  --n: 6;
+  --lado: min(64px, calc((100cqh - 16px - (var(--n) - 1) * 6px) / var(--n)), 80cqw);
 }
 
 .separador {
   width: 80%;
+  flex: none;
   border-top: 2px solid var(--acento);
-  margin: 4px 0;
+  margin: 2px 0;
 }
 
-.cuadro { width: 64px; height: 64px; overflow: visible; }
+.cuadro {
+  flex: none;
+  width: var(--lado);
+  height: var(--lado);
+  overflow: visible;
+}
+.guia {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 2;
+  stroke-dasharray: 4 5;
+}
 
 .palito line {
   stroke: var(--fosforo);
@@ -122,16 +210,18 @@ select {
 }
 .palito circle { fill: var(--cabeza); }
 
-.palito.nuevo { animation: aparecer 0.25s ease-out; }
+.palito.nuevo { animation: aparecer 0.25s ease-out; transform-box: fill-box; transform-origin: center; }
 @keyframes aparecer {
   from { opacity: 0; transform: scale(0.6); }
   to   { opacity: 1; transform: scale(1); }
 }
 
+/* ---------- Botones ---------- */
 .botones {
   display: flex;
   gap: 8px;
   width: 100%;
+  flex: none;
 }
 
 button {
@@ -141,10 +231,10 @@ button {
   border-radius: 12px;
   padding: 12px;
   font-weight: bold;
+  touch-action: manipulation;
   transition: transform 0.08s, filter 0.15s;
 }
 button:active { transform: scale(0.95); }
-button:disabled { opacity: 0.4; cursor: default; }
 
 .mas {
   flex: 2;
@@ -159,18 +249,7 @@ button:disabled { opacity: 0.4; cursor: default; }
   color: var(--madera);
 }
 
-footer {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  padding: 12px 16px 20px;
-}
-footer button {
-  background: var(--madera);
-  color: var(--tinta);
-  min-width: 140px;
-}
-
+/* ---------- Modal ---------- */
 .modal {
   position: fixed;
   inset: 0;
@@ -199,11 +278,17 @@ footer button {
 #revancha { background: var(--paño); color: var(--madera); }
 .secundario { background: transparent; color: var(--tinta); text-decoration: underline; }
 
+/* ---------- Pantallas chicas ---------- */
 @media (max-width: 400px) {
-  h1 { font-size: 1.4rem; }
-  .tablero { gap: 8px; padding: 8px; }
+  header { padding: 10px 12px 2px; gap: 8px; }
+  h1 { font-size: 1.25rem; }
+  .tablero { gap: 8px; padding: 6px 12px 12px; }
   .equipo { padding: 8px; }
-  .puntos { font-size: 2.4rem; }
-  .cuadro { width: 52px; height: 52px; }
-  footer button { min-width: 0; flex: 1; }
+}
+@media (max-height: 700px) {
+  .puntos { font-size: 2rem; }
+  .nombre { font-size: 1.05rem; padding: 2px; }
+  .estado { font-size: 0.7rem; }
+  .mas, .menos { padding: 9px; }
+  .segmentos span { padding: 5px 0; }
 }

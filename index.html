@@ -2,21 +2,34 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#1f4d2b">
+  <meta name="description" content="Anotador de puntos para el truco argentino">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Truco">
   <title>Anotador de Truco</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Anotador de Truco</h1>
-    <div class="opciones">
-      <label for="limite">Partida a</label>
-      <select id="limite">
-        <option value="15">15</option>
-        <option value="30" selected>30</option>
-      </select>
+    <div class="fila-titulo">
+      <h1>Anotador de Truco</h1>
+      <button id="reiniciar" class="btn-reiniciar" aria-label="Nueva partida">↻ Nueva</button>
     </div>
+    <fieldset class="limite" aria-label="Puntos de la partida">
+      <legend>Partida a</legend>
+      <div class="segmentos">
+        <label><input type="radio" name="limite" value="15"><span>15</span></label>
+        <label><input type="radio" name="limite" value="20"><span>20</span></label>
+        <label><input type="radio" name="limite" value="30"><span>30</span></label>
+        <label><input type="radio" name="limite" value="40"><span>40</span></label>
+      </div>
+    </fieldset>
   </header>
 
   <main class="tablero">
@@ -42,11 +55,6 @@
       </div>
     </section>
   </main>
-
-  <footer>
-    <button id="deshacer" disabled>↶ Deshacer</button>
-    <button id="reiniciar">Nueva partida</button>
-  </footer>
 
   <div id="ganador" class="modal" hidden>
     <div class="modal-contenido">
