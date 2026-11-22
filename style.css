@@ -237,14 +237,16 @@ button {
 button:active { transform: scale(0.95); }
 
 .mas {
+  line-height: 1;
   flex: 2;
-  font-size: 1.5rem;
+  font-size: 2rem;
   background: var(--acento);
   color: var(--tinta);
 }
 .menos {
   flex: 1;
-  font-size: 1.2rem;
+  font-size: 2rem;
+  line-height: 1;
   background: rgba(255, 255, 255, 0.15);
   color: var(--madera);
 }

@@ -1,5 +1,5 @@
 // Red primero (siempre la última versión), caché si no hay conexión.
-const CACHE = 'truco-v2';
+const CACHE = 'truco-v3';
 const ARCHIVOS = [
   './',
   'index.html',
