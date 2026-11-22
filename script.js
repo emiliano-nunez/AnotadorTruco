@@ -148,7 +148,19 @@
   partidaTerminada = estado.puntos.includes(estado.limite);
 
   // Instalable / funciona sin conexión
+  // Cuando hay una versión nueva, la app se recarga sola (la partida queda guardada)
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    const habiaVersion = !!navigator.serviceWorker.controller;
+    let recargando = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!habiaVersion || recargando) return;
+      recargando = true;
+      location.reload();
+    });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+        .then(reg => reg.update())
+        .catch(() => {});
+    });
   }
 })();

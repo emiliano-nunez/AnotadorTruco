@@ -1,5 +1,5 @@
 // Red primero (siempre la última versión), caché si no hay conexión.
-const CACHE = 'truco-v4';
+const CACHE = 'truco-v5';
 const ARCHIVOS = [
   './',
   'index.html',
@@ -13,7 +13,7 @@ const ARCHIVOS = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARCHIVOS)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARCHIVOS.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -27,7 +27,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: 'no-cache' })
       .then(resp => {
         if (resp.ok) {
           const copia = resp.clone();
